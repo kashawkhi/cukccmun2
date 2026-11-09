@@ -1,21 +1,21 @@
 'use client'
 
 import { Canvas, useFrame, useLoader } from '@react-three/fiber'
-import { OrbitControls, Line, PerspectiveCamera } from '@react-three/drei'
+import { Html, OrbitControls, PerspectiveCamera } from '@react-three/drei'
 import { useRef } from 'react'
 import * as THREE from 'three'
 
 const nations = [
-  { name: 'USA', lat: 38, lon: -97 },
-  { name: 'BRA', lat: -10, lon: -52 },
-  { name: 'GBR', lat: 54, lon: -2 },
-  { name: 'FRA', lat: 46, lon: 2 },
-  { name: 'IND', lat: 21, lon: 78 },
-  { name: 'CHN', lat: 35, lon: 103 },
-  { name: 'JPN', lat: 36, lon: 138 },
-  { name: 'ZAF', lat: -30, lon: 24 },
-  { name: 'AUS', lat: -25, lon: 134 },
-  { name: 'EGY', lat: 27, lon: 30 },
+  { name: 'United States', code: 'USA', lat: 38, lon: -97 },
+  { name: 'Brazil', code: 'BRA', lat: -10, lon: -52 },
+  { name: 'United Kingdom', code: 'GBR', lat: 54, lon: -2 },
+  { name: 'France', code: 'FRA', lat: 46, lon: 2 },
+  { name: 'India', code: 'IND', lat: 21, lon: 78 },
+  { name: 'China', code: 'CHN', lat: 35, lon: 103 },
+  { name: 'Japan', code: 'JPN', lat: 36, lon: 138 },
+  { name: 'South Africa', code: 'ZAF', lat: -30, lon: 24 },
+  { name: 'Australia', code: 'AUS', lat: -25, lon: 134 },
+  { name: 'Egypt', code: 'EGY', lat: 27, lon: 30 },
 ]
 
 function latLonToVector(lat: number, lon: number, radius = 1.52) {
@@ -24,32 +24,20 @@ function latLonToVector(lat: number, lon: number, radius = 1.52) {
   return new THREE.Vector3(-radius * Math.sin(phi) * Math.cos(theta), radius * Math.cos(phi), radius * Math.sin(phi) * Math.cos(theta))
 }
 
-function LatitudeLines() {
-  const lines = []
-  for (let lat = -60; lat <= 60; lat += 30) {
-    const points = Array.from({ length: 65 }, (_, i) => latLonToVector(lat, i * 5.625, 1.505))
-    lines.push(<Line key={`lat-${lat}`} points={points} color="#d5b36a" opacity={0.24} transparent lineWidth={0.5} />)
-  }
-  for (let lon = -180; lon < 180; lon += 30) {
-    const points = Array.from({ length: 65 }, (_, i) => latLonToVector(-90 + i * 2.8125, lon, 1.505))
-    lines.push(<Line key={`lon-${lon}`} points={points} color="#d5b36a" opacity={0.2} transparent lineWidth={0.5} />)
-  }
-  return <>{lines}</>
-}
-
 function Globe() {
   const group = useRef<THREE.Group>(null)
   const mapTexture = useLoader(THREE.TextureLoader, '/earth-map.png')
   useFrame((_, delta) => { if (group.current) group.current.rotation.y += delta * 0.16 })
   return <group ref={group} rotation={[0.12, -0.7, 0]}>
     <mesh><sphereGeometry args={[1.5, 64, 40]} /><meshBasicMaterial map={mapTexture} color="#e6c778" /></mesh>
-    <mesh><sphereGeometry args={[1.51, 24, 16]} /><meshBasicMaterial color="#d5b36a" wireframe transparent opacity={0.2} /></mesh>
-    <LatitudeLines />
-    {nations.map(({ name, lat, lon }) => {
+    {nations.map(({ name, code, lat, lon }) => {
       const position = latLonToVector(lat, lon)
-      return <group key={name} position={position}>
+      return <group key={code} position={position}>
         <mesh><sphereGeometry args={[0.055, 12, 12]} /><meshBasicMaterial color="#f6db8f" /></mesh>
         <mesh scale={1.9}><sphereGeometry args={[0.055, 12, 12]} /><meshBasicMaterial color="#d5b36a" transparent opacity={0.18} /></mesh>
+        <Html distanceFactor={5} position={[0, 0.14, 0]} center>
+          <span className="nation-label"><b>{code}</b>{name}</span>
+        </Html>
       </group>
     })}
   </group>
