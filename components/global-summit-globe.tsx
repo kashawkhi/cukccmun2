@@ -1,6 +1,6 @@
 'use client'
 
-import { Canvas, useFrame } from '@react-three/fiber'
+import { Canvas, useFrame, useLoader } from '@react-three/fiber'
 import { OrbitControls, Line, PerspectiveCamera } from '@react-three/drei'
 import { useRef } from 'react'
 import * as THREE from 'three'
@@ -39,10 +39,11 @@ function LatitudeLines() {
 
 function Globe() {
   const group = useRef<THREE.Group>(null)
+  const mapTexture = useLoader(THREE.TextureLoader, '/earth-map.png')
   useFrame((_, delta) => { if (group.current) group.current.rotation.y += delta * 0.16 })
   return <group ref={group} rotation={[0.12, -0.7, 0]}>
-    <mesh><sphereGeometry args={[1.5, 48, 32]} /><meshBasicMaterial color="#8d1718" transparent opacity={0.92} /></mesh>
-    <mesh><sphereGeometry args={[1.51, 24, 16]} /><meshBasicMaterial color="#d5b36a" wireframe transparent opacity={0.25} /></mesh>
+    <mesh><sphereGeometry args={[1.5, 64, 40]} /><meshBasicMaterial map={mapTexture} color="#e6c778" /></mesh>
+    <mesh><sphereGeometry args={[1.51, 24, 16]} /><meshBasicMaterial color="#d5b36a" wireframe transparent opacity={0.2} /></mesh>
     <LatitudeLines />
     {nations.map(({ name, lat, lon }) => {
       const position = latLonToVector(lat, lon)
