@@ -1,5 +1,6 @@
 import { ArrowUpRight, CalendarDays, ChevronRight, Globe2, Landmark, Menu, Scale, Star } from 'lucide-react'
 import { GlobalSummitGlobe } from '@/components/global-summit-globe'
+import { MUNAvatarChooser } from '@/components/mun-avatar-chooser'
 
 const pillars = [
   { icon: Scale, title: 'Diplomacy', text: 'Find common ground across every room.' },
@@ -38,7 +39,7 @@ export default function Page() {
         <div className="pillars">{pillars.map(({ icon: Icon, title, text }) => <div className="pillar" key={title}><Icon size={23} strokeWidth={1.4} /><span className="pillar-number">0{pillars.findIndex((p) => p.title === title) + 1}</span><h3>{title}</h3><p>{text}</p></div>)}</div>
       </section>
 
-      <section id="committees" className="committees-section section-wrap"><div className="section-kicker">02 — THE ROOMS</div><div className="committee-heading"><h2>Enter the<br /><em>conversation.</em></h2><p>From the halls of power to the frontlines of change, choose your room and make your case.</p></div><div className="committee-list"><div><span>01</span><strong>United Nations Security Council</strong><small>International peace &amp; security</small><ChevronRight /></div><div><span>02</span><strong>United Nations Human Rights Council</strong><small>Rights, justice &amp; dignity</small><ChevronRight /></div><div className="global-summit-row"><div className="global-summit-copy"><span>03</span><strong>Global Nations Summit</strong><small>Global cooperation &amp; diplomacy</small><p>Track the world&apos;s major voices as they gather to negotiate a shared future.</p><ChevronRight /></div><GlobalSummitGlobe /></div></div></section>
+      <section id="committees" className="committees-section section-wrap"><div className="section-kicker">02 — THE ROOMS</div><div className="committee-heading"><h2>Enter the<br /><em>conversation.</em></h2><p>From the halls of power to the frontlines of change, choose your room and make your case.</p></div><div className="committee-list"><div className="committee-chooser-block"><div className="committee-row"><span>01</span><strong>United Nations Security Council</strong><small>International peace &amp; security</small><ChevronRight /></div><MUNAvatarChooser committee="United Nations Security Council" /></div><div className="committee-row"><span>02</span><strong>United Nations Human Rights Council</strong><small>Rights, justice &amp; dignity</small><ChevronRight /></div><div className="global-summit-row"><div className="global-summit-copy"><span>03</span><strong>Global Nations Summit</strong><small>Global cooperation &amp; diplomacy</small><p>Track the world&apos;s major voices as they gather to negotiate a shared future.</p><ChevronRight /></div><GlobalSummitGlobe /><MUNAvatarChooser committee="Global Nations Summit" /></div></div></section>
 
       <section id="schedule" className="quote-section"><div className="quote-mark">“</div><blockquote>Great diplomacy begins<br />with a <em>single voice.</em></blockquote><p>— THE CUKCCMUN&apos;27 PRINCIPLE</p></section>
 
