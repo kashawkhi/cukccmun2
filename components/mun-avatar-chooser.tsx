@@ -1,21 +1,43 @@
 'use client'
 
-import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ChevronLeft, ChevronRight, MoveRight } from 'lucide-react'
 
-const delegates = [
-  { name: 'Mahatma Gandhi', nation: 'India', flag: '🇮🇳', image: '/avatars/gandhi.png' },
-  { name: 'Donald Trump', nation: 'United States', flag: '🇺🇸', image: '/avatars/trump.png' },
-  { name: 'King Charles III', nation: 'United Kingdom', flag: '🇬🇧', image: '/avatars/charles.png' },
-  { name: 'Joseph Stalin', nation: 'USSR', flag: '☭', image: '/avatars/stalin.png' },
-  { name: 'Che Guevara', nation: 'Cuba', flag: '🇨🇺', image: '/avatars/che.png' },
-]
+const roster = [
+  ['Adolf Hitler', 'Germany', '🇩🇪'], ['Joseph Stalin', 'USSR', '☭'], ['Vladimir Lenin', 'USSR', '☭'], ['Benito Mussolini', 'Italy', '🇮🇹'], ['Otto von Bismarck', 'Germany', '🇩🇪'],
+  ['Mustafa Kemal Atatürk', 'Türkiye', '🇹🇷'], ['Mahatma Gandhi', 'India', '🇮🇳'], ['Jawaharlal Nehru', 'India', '🇮🇳'], ['Muhammad Ali Jinnah', 'Pakistan', '🇵🇰'], ['Subhas Chandra Bose', 'India', '🇮🇳'],
+  ['B. R. Ambedkar', 'India', '🇮🇳'], ['Indira Gandhi', 'India', '🇮🇳'], ['Narendra Modi', 'India', '🇮🇳'], ['Atal Bihari Vajpayee', 'India', '🇮🇳'], ['Manmohan Singh', 'India', '🇮🇳'],
+  ['Saddam Hussein', 'Iraq', '🇮🇶'], ['Muammar Gaddafi', 'Libya', '🇱🇾'], ['Donald Trump', 'United States', '🇺🇸'], ['Kim Jong Un', 'North Korea', '🇰🇵'], ['Vladimir Putin', 'Russia', '🇷🇺'],
+  ['Xi Jinping', 'China', '🇨🇳'], ['Benjamin Netanyahu', 'Israel', '🇮🇱'], ['Emmanuel Macron', 'France', '🇫🇷'], ['Volodymyr Zelenskyy', 'Ukraine', '🇺🇦'], ['Ali Khamenei', 'Iran', '🇮🇷'],
+  ['Recep Tayyip Erdoğan', 'Türkiye', '🇹🇷'], ['Luiz Inácio Lula da Silva', 'Brazil', '🇧🇷'], ['Fidel Castro', 'Cuba', '🇨🇺'], ['Che Guevara', 'Cuba', '🇨🇺'], ['Mao Zedong', 'China', '🇨🇳'],
+  ['Ho Chi Minh', 'Vietnam', '🇻🇳'], ['Nelson Mandela', 'South Africa', '🇿🇦'], ['Martin Luther King Jr.', 'United States', '🇺🇸'], ['Winston Churchill', 'United Kingdom', '🇬🇧'], ['Franklin D. Roosevelt', 'United States', '🇺🇸'],
+  ['John F. Kennedy', 'United States', '🇺🇸'], ['Margaret Thatcher', 'United Kingdom', '🇬🇧'], ['Queen Elizabeth II', 'United Kingdom', '🇬🇧'], ['Barack Obama', 'United States', '🇺🇸'], ['Mikhail Gorbachev', 'USSR', '☭'],
+  ['Osama bin Laden', 'Saudi Arabia', '🇸🇦'], ['Aung San Suu Kyi', 'Myanmar', '🇲🇲'], ['Sheikh Mujibur Rahman', 'Bangladesh', '🇧🇩'], ['Sheikh Hasina', 'Bangladesh', '🇧🇩'], ['Benazir Bhutto', 'Pakistan', '🇵🇰'],
+  ['Gamal Abdel Nasser', 'Egypt', '🇪🇬'], ['Idi Amin', 'Uganda', '🇺🇬'], ['Pol Pot', 'Cambodia', '🇰🇭'], ['Francisco Franco', 'Spain', '🇪🇸'], ['Giorgia Meloni', 'Italy', '🇮🇹'],
+  ['Sanae Takaichi', 'Japan', '🇯🇵'], ['Malala Yousafzai', 'Pakistan', '🇵🇰'], ['Dalai Lama', 'Tibet', '🏳️'], ['Zohran Mamdani', 'United States', '🇺🇸'], ['General Aladeen', 'Wadiya', '★'],
+] as const
+
+const delegates = roster.map(([name, nation, flag], index) => ({
+  name,
+  nation,
+  flag,
+  sheet: `/avatars/sheet-${String(Math.floor(index / 5) + 1).padStart(2, '0')}.png`,
+  slot: index % 5,
+}))
+
+function Portrait({ delegate, className, alt }: { delegate: (typeof delegates)[number]; className: string; alt: string }) {
+  return <span className={`${className} portrait-sheet`} role="img" aria-label={alt} style={{ backgroundImage: `url(${delegate.sheet})`, backgroundPosition: `${delegate.slot * 25}% center` }} />
+}
 
 export function MUNAvatarChooser({ committee }: { committee: string }) {
   const [selected, setSelected] = useState(0)
   const active = delegates[selected]
+  const cardsRef = useRef<Array<HTMLButtonElement | null>>([])
   const move = (direction: number) => setSelected((current) => (current + direction + delegates.length) % delegates.length)
+
+  useEffect(() => {
+    cardsRef.current[selected]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' })
+  }, [selected])
 
   return (
     <section className="avatar-chooser" aria-label={`${committee} delegate avatar selection`}>
@@ -29,13 +51,13 @@ export function MUNAvatarChooser({ committee }: { committee: string }) {
       </div>
       <div className="avatar-selector">
         <button className="avatar-feature" type="button" onClick={() => move(1)} aria-label={`Selected delegate ${active.name}, ${active.nation}. Choose next delegate`}>
-          <span className="avatar-portrait"><Image src={active.image} alt={`Caricature portrait of ${active.name}`} fill sizes="150px" priority={selected === 0} /></span>
+          <Portrait delegate={active} className="avatar-portrait" alt={`Caricature portrait of ${active.name}`} />
           <span className="avatar-feature-meta"><span>{active.flag} {active.nation}</span><strong>{active.name}</strong><small>DELEGATE PROFILE <MoveRight /></small></span>
         </button>
         <div className="avatar-rail" role="group" aria-label="Available delegates">
           {delegates.map((delegate, index) => (
-            <button key={delegate.nation} type="button" className={`avatar-card${selected === index ? ' is-selected' : ''}`} aria-pressed={selected === index} onClick={() => setSelected(index)} aria-label={`Select ${delegate.name}, representing ${delegate.nation}`}>
-              <span className="avatar-thumb"><Image src={delegate.image} alt="" fill sizes="78px" /></span>
+            <button ref={(element) => { cardsRef.current[index] = element }} key={delegate.name} type="button" className={`avatar-card${selected === index ? ' is-selected' : ''}`} aria-pressed={selected === index} onClick={() => setSelected(index)} aria-label={`Select ${delegate.name}, representing ${delegate.nation}`}>
+              <Portrait delegate={delegate} className="avatar-thumb" alt="" />
               <span className="avatar-card-flag">{delegate.flag}</span>
               <span className="avatar-card-country">{delegate.nation}</span>
             </button>
