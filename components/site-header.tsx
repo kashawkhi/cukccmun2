@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
@@ -22,7 +23,7 @@ export function SiteHeader() {
   return (
     <header className="site-header">
       <nav className="nav-shell" aria-label="Main navigation">
-        <Link className="wordmark" href="/" aria-label="CUKCCMUN 27 home"><span>CUKCC</span><b>MUN&apos;27</b></Link>
+        <Link className="site-logo-link" href="/" aria-label="CUKCCMUN 27 home"><Image className="site-logo-image" src="/mun27-emblem.png" alt="CUKCCMUN’27, Second Edition" width={72} height={72} priority /></Link>
         <div className={`nav-links${menuOpen ? ' is-open' : ''}`} id="site-navigation">
           {links.map(({ label, href }) => <Link key={href} href={href} aria-current={pathname === href ? 'page' : undefined} onClick={() => setMenuOpen(false)}>{label}</Link>)}
         </div>

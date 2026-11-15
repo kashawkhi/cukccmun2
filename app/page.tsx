@@ -1,4 +1,5 @@
-import { ArrowUpRight, ChevronRight, Globe2, Landmark, Scale, Star } from 'lucide-react'
+import Image from 'next/image'
+import { ArrowUpRight, ChevronRight, Globe2, Landmark, Scale } from 'lucide-react'
 import { NationAvatarChooser } from '@/components/nation-avatar-chooser'
 import { MUNAvatarChooser } from '@/components/mun-avatar-chooser'
 
@@ -19,7 +20,7 @@ export default function Page() {
           <p className="hero-intro">An arena for ideas, diplomacy, and the leaders who shape what comes next.</p>
           <div className="hero-actions"><a className="button button-gold" href="/registration">Secure your seat <ArrowUpRight size={17} /></a><a className="text-link" href="/committees">Discover CUKCCMUN <ChevronRight size={16} /></a></div>
         </div>
-        <div className="hero-seal" aria-label="CUKCCMUN 2027 emblem"><div className="seal-ring"><span>CUKCCMUN • EST. 2027 • CUKCCMUN •</span><div className="seal-center"><Star size={19} fill="currentColor" /><strong>27</strong><small>CONFERENCE</small></div></div></div>
+        <div className="hero-logo-art"><Image src="/mun27-emblem.png" alt="CUKCCMUN’27 Second Edition emblem" width={900} height={920} priority /></div>
         <div className="hero-meta"><span>01 /</span><span>16—18 OCTOBER 2027</span><span className="meta-rule" /><span>CUK, BENGALURU</span></div>
         <div className="scroll-cue"><span>Scroll to explore</span><i /></div>
       </section>
