@@ -1,6 +1,6 @@
 import { ChevronRight } from 'lucide-react'
 import { ContentPage } from '@/components/content-page'
-import { GlobalSummitGlobe } from '@/components/global-summit-globe'
+import { NationAvatarChooser } from '@/components/nation-avatar-chooser'
 import { MUNAvatarChooser } from '@/components/mun-avatar-chooser'
 
 const committees = [
@@ -18,7 +18,7 @@ export default function CommitteesPage() {
             <div className="committee-page-title"><span>{committee.number}</span><div><h2>{committee.title}</h2><p>{committee.focus}</p></div><ChevronRight aria-hidden="true" /></div>
             <p className="committee-page-description">{committee.description}</p>
             {committee.number === '01' && <MUNAvatarChooser committee={committee.title} />}
-            {committee.number === '03' && <GlobalSummitGlobe />}
+            {committee.number === '03' && <NationAvatarChooser committee={committee.title} />}
           </article>
         ))}
       </div>
