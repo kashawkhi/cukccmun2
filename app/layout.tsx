@@ -1,6 +1,9 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
+import { Playfair_Display } from 'next/font/google'
 import './globals.css'
+
+const playfairDisplay = Playfair_Display({ subsets: ['latin'], weight: ['400', '600', '700'], variable: '--font-playfair' })
 import 'flag-icons/css/flag-icons.min.css'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
@@ -42,7 +45,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={playfairDisplay.variable}>
       <body className="antialiased">
         <div className="mun-site">
           <div className="topline" aria-hidden="true" />

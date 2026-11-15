@@ -16,8 +16,8 @@ export default function Page() {
       <section id="top" className="hero-section">
         <div className="hero-copy">
           <p className="eyebrow"><span className="eyebrow-line" /> CUKCC PRESENTS</p>
-          <h1>Debate Vs.<br /><em>Dicussion meets Excellence.</em></h1>
-          <p className="hero-intro">An arena for ideas, diplomacy, and the leaders who shape what comes next.</p>
+          <h1>Dicussion meets Excellence.<br /><em>CUKCCMUN&apos;27</em></h1>
+          <p className="hero-intro">CAUSA ✦ CONSILIUM ✦ CONCORDIA</p>
           <div className="hero-actions"><a className="button button-gold" href="/registration">Secure your seat <ArrowUpRight size={17} /></a><a className="text-link" href="/committees">Discover CUKCCMUN <ChevronRight size={16} /></a></div>
         </div>
         <div className="hero-logo-art"><Image src="/mun27-emblem.png" alt="CUKCCMUN’27 Second Edition emblem" width={900} height={920} priority /></div>

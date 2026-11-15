@@ -178,7 +178,7 @@
 h1, h2, blockquote { font-weight: 400; letter-spacing: -.06em; line-height: .92; margin: 27px 0; }
 h1 { font-size: clamp(58px, 8vw, 120px); }
 h1 em, h2 em, blockquote em { color: var(--gold); font-style: italic; }
-.hero-intro { width: 300px; font-size: 17px; line-height: 1.55; color: rgba(244,234,211,.72); }
+.hero-intro { width: 300px; font-size: 17px; line-height: 1.55; color: rgba(244,234,211,.72); font-weight: 500; font-style: italic; }.hero-copy h1 { font-size: 48px; }.hero-copy h1 em { font-family: var(--font-playfair), 'Playfair Display', serif; font-style: normal; font-weight: 600; }.hero-actions .button-gold { border-radius: 13px; }
 .hero-actions { display: flex; align-items: center; gap: 29px; margin-top: 40px; }
 .button-gold { color: var(--ink); background: var(--gold); padding: 18px 22px; }
 .text-link { display: inline-flex; align-items: center; gap: 8px; }
