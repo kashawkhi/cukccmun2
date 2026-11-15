@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { ChevronLeft, ChevronRight, MoveRight } from 'lucide-react'
 
 const roster = [
@@ -33,11 +33,18 @@ export function MUNAvatarChooser({ committee }: { committee: string }) {
   const [selected, setSelected] = useState(0)
   const active = delegates[selected]
   const cardsRef = useRef<Array<HTMLButtonElement | null>>([])
-  const move = (direction: number) => setSelected((current) => (current + direction + delegates.length) % delegates.length)
-
-  useEffect(() => {
-    cardsRef.current[selected]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' })
-  }, [selected])
+  const railRef = useRef<HTMLDivElement>(null)
+  const selectDelegate = (index: number) => {
+    setSelected(index)
+    const rail = railRef.current
+    const card = cardsRef.current[index]
+    if (rail && card) {
+      const railBounds = rail.getBoundingClientRect()
+      const cardBounds = card.getBoundingClientRect()
+      rail.scrollTo({ left: rail.scrollLeft + cardBounds.left - railBounds.left - (rail.clientWidth - card.clientWidth) / 2, behavior: 'smooth' })
+    }
+  }
+  const move = (direction: number) => selectDelegate((selected + direction + delegates.length) % delegates.length)
 
   return (
     <section className="avatar-chooser" aria-label={`${committee} delegate avatar selection`}>
@@ -54,9 +61,9 @@ export function MUNAvatarChooser({ committee }: { committee: string }) {
           <Portrait delegate={active} className="avatar-portrait" alt={`Caricature portrait of ${active.name}`} />
           <span className="avatar-feature-meta"><span>{active.flag} {active.nation}</span><strong>{active.name}</strong><small>DELEGATE PROFILE <MoveRight /></small></span>
         </button>
-        <div className="avatar-rail" role="group" aria-label="Available delegates">
+        <div ref={railRef} className="avatar-rail" role="group" aria-label="Available delegates">
           {delegates.map((delegate, index) => (
-            <button ref={(element) => { cardsRef.current[index] = element }} key={delegate.name} type="button" className={`avatar-card${selected === index ? ' is-selected' : ''}`} aria-pressed={selected === index} onClick={() => setSelected(index)} aria-label={`Select ${delegate.name}, representing ${delegate.nation}`}>
+            <button ref={(element) => { cardsRef.current[index] = element }} key={delegate.name} type="button" className={`avatar-card${selected === index ? ' is-selected' : ''}`} aria-pressed={selected === index} onClick={() => selectDelegate(index)} aria-label={`Select ${delegate.name}, representing ${delegate.nation}`}>
               <Portrait delegate={delegate} className="avatar-thumb" alt="" />
               <span className="avatar-card-flag">{delegate.flag}</span>
               <span className="avatar-card-country">{delegate.nation}</span>

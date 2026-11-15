@@ -1,10 +1,12 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
+import { SiteHeader } from '@/components/site-header'
+import { SiteFooter } from '@/components/site-footer'
 
 export const metadata: Metadata = {
-  title: "CUKCCMUN'27 — Where nations meet purpose",
-  description: "CUKCCMUN'27 — a college Model United Nations conference at CUK, Bengaluru.",
+  title: "CUKCCMUN'27 — Debate Vs. Dicussion meets Excellence",
+  description: "Explore committees, registration, itinerary, and conference information for CUKCCMUN'27 in Bengaluru.",
   generator: 'v0.app',
   icons: {
     icon: [
@@ -41,7 +43,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
-        {children}
+        <div className="mun-site">
+          <div className="topline" aria-hidden="true" />
+          <SiteHeader />
+          {children}
+          <SiteFooter />
+        </div>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
